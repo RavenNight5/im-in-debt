@@ -301,6 +301,7 @@ RectTransform:
   m_Children:
   - {fileID: 554080887}
   - {fileID: 354161256}
+  - {fileID: 933200095}
   m_Father: {fileID: 620530833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -490,6 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 354161256}
   - component: {fileID: 354161257}
+  - component: {fileID: 354161258}
   m_Layer: 5
   m_Name: Welcome
   m_TagString: Untagged
@@ -510,7 +512,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 133645575}
-  - {fileID: 933200095}
   - {fileID: 638233165}
   m_Father: {fileID: 147855087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -531,6 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c534db5de23274bb4c47d0bdbb250e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Welcome: {fileID: 0}
   WelcomeText: {fileID: 133645576}
   PromptKey: {fileID: 933200096}
   button: {fileID: 638233166}
@@ -539,6 +541,18 @@ MonoBehaviour:
   - I must repay...
   - ...with my attention
   textFadeTime: 0.75
+--- !u!225 &354161258
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354161255}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &554080886
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,7 +856,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 354161256}
+  m_Father: {fileID: 147855087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -954,7 +968,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933200094}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0.04
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
