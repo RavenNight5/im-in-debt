@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class scr : MonoBehaviour
 
     public Slider attentionBar;
 
+    public GameObject losePanel;
+
     public List<String> allKeyPrompts = new List<String> { "Backspace", "a", "d", "w", "s", "Semicolon" };  // Space and enter are not included here as they are already in currentKeyPrompts
     public List<String> currentKeyPrompts = new List<String> { "Space", "Return" };
 
@@ -25,12 +28,19 @@ public class scr : MonoBehaviour
 
     public float regenMultiplier = 0.05f;
 
+    public float graceValue;
+    public float gracePercentage = 0.95f;
+
     public int waitRangeLOW = 2;
     public int waitRangeHigh = 6;
 
     private bool regenerateAttention = true;
 
+    private bool gracePeriod = true;
+
     private bool keyHeld = false;
+
+    private bool playing = false;
 
     private void Awake()
     {
@@ -38,6 +48,13 @@ public class scr : MonoBehaviour
             keyboardPrompt.SetText(keyToPress);
 
         StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
+
+        playing = true;
+    }
+
+    public void StartDay()
+    {
+        graceValue = attentionBar.maxValue * gracePercentage;
     }
 
     IEnumerator waitrand(int low, int high)
@@ -63,6 +80,18 @@ public class scr : MonoBehaviour
         if (regenerateAttention)
         {
             attentionBar.value += regenMultiplier;
+        }
+
+        if (attentionBar.value <= graceValue)
+        {
+            gracePeriod = false;
+        }
+
+        if (attentionBar.value == attentionBar.maxValue && !gracePeriod)
+        {
+            print("uh oh, you lost the day :(");
+            playing = false;
+            losePanel.GetComponent<scrLose>().Activate();
         }
     }
 
