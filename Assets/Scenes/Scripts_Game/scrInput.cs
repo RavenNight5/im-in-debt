@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,16 +17,23 @@ public class scr : MonoBehaviour
     public List<String> allKeyPrompts = new List<String> { "Backspace", "a", "d", "w", "s", "Semicolon" };  // Space and enter are not included here as they are already in currentKeyPrompts
     public List<String> currentKeyPrompts = new List<String> { "Space", "Return" };
 
-    private String keyToPress = "";
+    private String keyToPress = "Space";
     private String currentKeyPressed;
 
-    private float attentionDecrement = 0.1f;
-    
+    public float attentionDecrement = 0.1f;
+    public float attentionIncrement = 0.2f;
+
+    public float regenMultiplier = 0.05f;
+
     public int waitRangeLOW = 2;
     public int waitRangeHigh = 6;
 
+    private bool regenerateAttention = true;
+
     private void Awake()
     {
+        keyboardPrompt.SetText(keyToPress);
+
         StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
     }
 
@@ -47,28 +55,43 @@ public class scr : MonoBehaviour
         StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
     }
     
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (regenerateAttention)
+        {
+            attentionBar.value += regenMultiplier;
+
+        }
+
     }
 
 
     void OnGUI()
     {
         Event e = Event.current;
+
         if (e.isKey && e.keyCode != KeyCode.None)
         {
+            regenerateAttention = false;
+
             keyPressed.SetText(e.keyCode.ToString());
             currentKeyPressed = e.keyCode.ToString();
 
             if (currentKeyPressed == keyToPress)
             {
                 attentionBar.value -= attentionDecrement;
+
                 print("Correct Key Pressed");
             } else if (currentKeyPressed != keyToPress)
             {
+                attentionBar.value += attentionIncrement;
+
                 print("Wrong Key Pressed");
             }
+        }
+        else
+        {
+            regenerateAttention = true;
         }
 
     }

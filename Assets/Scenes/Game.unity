@@ -569,8 +569,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1655170382}
-  - {fileID: 1016219849}
   - {fileID: 24333601}
+  - {fileID: 1016219849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -592,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyPressed: {fileID: 1283637995}
   keyboardPrompt: {fileID: 1322106885}
+  attentionBar: {fileID: 1999055948}
   allKeyPrompts:
   - Backspace
   - a
@@ -601,7 +602,12 @@ MonoBehaviour:
   - Semicolon
   currentKeyPrompts:
   - Space
-  - Enter
+  - Return
+  attentionDecrement: 0.3
+  attentionIncrement: 0.4
+  regenMultiplier: 0.04
+  waitRangeLOW: 2
+  waitRangeHigh: 6
 --- !u!114 &594863841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,9 +1731,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1014477035}
   m_Direction: 2
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 50
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
