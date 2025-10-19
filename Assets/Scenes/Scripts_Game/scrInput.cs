@@ -7,7 +7,12 @@ using UnityEngine.InputSystem;
 
 public class scr : MonoBehaviour
 {
-    public TMP_Text testText;
+    public TMP_Text keyPressed;
+    public TMP_Text keyboardPrompt;
+
+    public List<String> allKeyPrompts = new List<String> { "Backspace", "a", "d", "w", "s", "Semicolon" };  // Space and enter are not included here as they are already in currentKeyPrompts
+    public List<String> currentKeyPrompts = new List<String> { "Space", "Enter" };
+
     //public InputActionAsset actions;
     //public InputAction keyboardAction;
     //public InputAction mouseAction;
@@ -36,7 +41,7 @@ public class scr : MonoBehaviour
         Event e = Event.current;
         if (e.isKey && e.keyCode != KeyCode.None)
         {
-            testText.SetText("Key Pressed: " + e.keyCode.ToString());
+            keyPressed.SetText(e.keyCode.ToString());
         }
     }
 

@@ -64,6 +64,7 @@ public class scrWelcome : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         Welcome.DOFade(0.0f, 2.2f);
+        PromptKey.DOFade(0.0f, 2.2f);
 
         StartGame();
     }
