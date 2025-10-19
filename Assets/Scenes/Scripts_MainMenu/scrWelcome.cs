@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-
 using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class scrWelcome : MonoBehaviour
 {
+    private CanvasGroup Welcome;
     public TMP_Text WelcomeText;
     public TMP_Text PromptKey;
 
@@ -23,24 +24,58 @@ public class scrWelcome : MonoBehaviour
     {
         button.Select();
 
-        WelcomeText.GetComponentInParent<CanvasGroup>().alpha = 0.0f;
+        Welcome = GetComponent<CanvasGroup>();
+        Welcome.alpha = 0.0f;
     }
 
+    IEnumerator waitfade(float t, CanvasGroup cg, TMP_Text text=null, string textstr="")
+    {
+        yield return new WaitForSeconds(t);
 
+        if (text != null)
+        {
+            text.SetText(textstr);
+        }
+
+        cg.DOFade(1.0f, t*1.3f);
+
+    }
 
     public void ContinueCycle()
     {
-        print("Continued...");
+        Welcome.DOFade(0.0f, textFadeTime);
 
-        // FadeTextInOut(WelcomeText.GetComponentInParent<CanvasGroup>());
-
-        WelcomeText.GetComponentInParent<CanvasGroup>().DOFade(1.0f, textFadeTime);
-        WelcomeText.SetText(WelcomeLines[currentWelcomeLine]);
-
+        StartCoroutine(waitfade(textFadeTime, Welcome, WelcomeText, WelcomeLines[currentWelcomeLine]));
 
         if (currentWelcomeLine < WelcomeLines.Count - 1)
         {
             currentWelcomeLine++;
         }
+        else
+        {
+            button.gameObject.SetActive(false);
+            StartCoroutine(waittostart());
+            
+
+        }
+    }
+    IEnumerator waittostart()
+    {
+        yield return new WaitForSeconds(2);
+
+        Welcome.DOFade(0.0f, 2.2f);
+        PromptKey.DOFade(0.0f, 2.2f);
+
+        StartGame();
+    }
+    IEnumerator start()
+    {
+        yield return new WaitForSeconds(2.3f);
+
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+    }
+    private void StartGame()
+    {
+        StartCoroutine(start());
     }
 }
