@@ -11,6 +11,9 @@ public class scr : MonoBehaviour
 {
     public TMP_Text keyPressed;
     public TMP_Text keyboardPrompt;
+    public TMP_Text date;
+
+    public GameObject nextDayPanel;
 
     public Slider attentionBar;
 
@@ -32,10 +35,15 @@ public class scr : MonoBehaviour
 
     private bool keyHeld = false;
 
+    private int currentDay = 1;
+    private bool playing = false;
+
     private void Awake()
     {
         if (keyboardPrompt != null)
             keyboardPrompt.SetText(keyToPress);
+
+        playing = true;
 
         StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
     }
@@ -52,10 +60,14 @@ public class scr : MonoBehaviour
 
         if (keyboardPrompt != null)
         {
-            keyboardPrompt.SetText(keyToPress);
+            keyboardPrompt.SetText("["+keyToPress.ToLower()+"]");
         }
 
-        StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
+        if (playing)
+        {
+            StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
+        }
+        
     }
     
     void FixedUpdate()
@@ -64,13 +76,23 @@ public class scr : MonoBehaviour
         {
             attentionBar.value += regenMultiplier;
         }
+
+        if (attentionBar.value <= 0.0f && playing)  //COMPLETED DAY
+        {
+            playing = false;
+            currentDay++;
+
+            date.SetText($"<b><size=8>0{(1 + currentDay).ToString()}</size></b>\n/03/1989");
+
+            nextDayPanel.GetComponent<scrNextDay>().Activate();
+        }
     }
 
     void OnGUI()
     {
         Event e = Event.current;
 
-        if (e.isKey && e.keyCode != KeyCode.None)
+        if (e.isKey && e.keyCode != KeyCode.None && playing)
         {
             if (e.type == EventType.KeyDown && !keyHeld)
             {
