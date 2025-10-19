@@ -14,32 +14,39 @@ public class scr : MonoBehaviour
     public Slider attentionBar;
 
     public List<String> allKeyPrompts = new List<String> { "Backspace", "a", "d", "w", "s", "Semicolon" };  // Space and enter are not included here as they are already in currentKeyPrompts
-    public List<String> currentKeyPrompts = new List<String> { "Space", "Enter" };
+    public List<String> currentKeyPrompts = new List<String> { "Space", "Return" };
 
-    private String keyToPress;
+    private String keyToPress = "";
     private String currentKeyPressed;
 
     private float attentionDecrement = 0.1f;
-    //public InputActionAsset actions;
-    //public InputAction keyboardAction;
-    //public InputAction mouseAction;
-    // Start is called before the first frame update
-    void Start()
+    
+    public int waitRangeLOW = 2;
+    public int waitRangeHigh = 6;
+
+    private void Awake()
     {
-        //actions = GetComponent<PlayerInput>().actions;
-
-        //keyboardAction = actions.FindAction("KeyboardClick");
-        //keyboardAction.Enable();
-
-        //mouseAction = actions.FindAction("MouseClick");
-        //mouseAction.Enable();
-
-        //keyboardAction.performed -= ctx => keyPressed(ctx);
-
-        keyToPress = currentKeyPrompts[0];
+        StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
     }
 
-    // Update is called once per frame
+    IEnumerator waitrand(int low, int high)
+    {
+        int randwait = UnityEngine.Random.Range(low, high);
+        print(randwait);
+        yield return new WaitForSeconds(randwait);
+
+        int rand = UnityEngine.Random.Range(0, currentKeyPrompts.Count);
+
+        keyToPress = currentKeyPrompts[rand];
+
+        if (keyPressed != null)
+        {
+            keyboardPrompt.SetText(keyToPress);
+        }
+
+        StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
+    }
+    
     void Update()
     {
         
@@ -67,20 +74,4 @@ public class scr : MonoBehaviour
     }
 
 
-    //private void keyPressed(InputAction.CallbackContext ctx)
-    //{
-    //    var binding = ctx.action.GetBindingForControl(ctx.control);
-    //    print($"Key Pressed: {binding}");
-
-    //    if (keyboardAction.triggered)
-    //    {
-    //        testText.SetText("Keyboard Pressed");
-    //    }
-    //    if (mouseAction.triggered)
-    //    {
-    //        testText.SetText(mouseAction.GetBindingDisplayString());
-    //    }
-
-
-    //}
 }
