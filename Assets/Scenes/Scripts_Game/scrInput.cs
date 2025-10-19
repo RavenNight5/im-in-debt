@@ -30,9 +30,12 @@ public class scr : MonoBehaviour
 
     private bool regenerateAttention = true;
 
+    private bool keyHeld = false;
+
     private void Awake()
     {
-        keyboardPrompt.SetText(keyToPress);
+        if (keyboardPrompt != null)
+            keyboardPrompt.SetText(keyToPress);
 
         StartCoroutine(waitrand(waitRangeLOW, waitRangeHigh));
     }
@@ -47,7 +50,7 @@ public class scr : MonoBehaviour
 
         keyToPress = currentKeyPrompts[rand];
 
-        if (keyPressed != null)
+        if (keyboardPrompt != null)
         {
             keyboardPrompt.SetText(keyToPress);
         }
@@ -60,11 +63,8 @@ public class scr : MonoBehaviour
         if (regenerateAttention)
         {
             attentionBar.value += regenMultiplier;
-
         }
-
     }
-
 
     void OnGUI()
     {
@@ -72,29 +72,32 @@ public class scr : MonoBehaviour
 
         if (e.isKey && e.keyCode != KeyCode.None)
         {
-            regenerateAttention = false;
-
-            keyPressed.SetText(e.keyCode.ToString());
-            currentKeyPressed = e.keyCode.ToString();
-
-            if (currentKeyPressed == keyToPress)
+            if (e.type == EventType.KeyDown && !keyHeld)
             {
-                attentionBar.value -= attentionDecrement;
+                keyHeld = true;
+                regenerateAttention = false;
 
-                print("Correct Key Pressed");
-            } else if (currentKeyPressed != keyToPress)
+                if (keyPressed != null)
+                    keyPressed.SetText(e.keyCode.ToString());
+
+                currentKeyPressed = e.keyCode.ToString();
+
+                if (currentKeyPressed == keyToPress)
+                {
+                    attentionBar.value -= attentionDecrement;
+                    print("Correct Key Pressed");
+                }
+                else
+                {
+                    attentionBar.value += attentionIncrement;
+                    print("Wrong Key Pressed");
+                }
+            }
+            else if (e.type == EventType.KeyUp)
             {
-                attentionBar.value += attentionIncrement;
-
-                print("Wrong Key Pressed");
+                keyHeld = false;
+                regenerateAttention = true;
             }
         }
-        else
-        {
-            regenerateAttention = true;
-        }
-
     }
-
-
 }
