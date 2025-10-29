@@ -8,7 +8,4 @@ This game was submitted to CanJam 2025: a **small 24 hour game jam** with the th
 
 <br>
 
-The game was worked on by 2 developers and recieved **3rd place**:
-
-Jam page: <https://itch.io/jam/canjam-2025/entries>\
-itch.io page: <https://heron42.itch.io/i-m-in-debt>
+The game was worked on by 2 developers and recieved **3rd place**!
